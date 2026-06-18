@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Venta de equipos y accesorios — Fotografía & Video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #141414;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --accent: #e8ff47;
+    --accent-dim: rgba(232,255,71,0.10);
+    --text: #f0f0f0;
+    --text-muted: #555;
+    --text-mid: #888;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:15px;line-height:1.5}
+
+  header{
+    padding:24px 40px;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;
+    position:sticky;top:0;background:var(--bg);z-index:100;
+  }
+  .site-desc{font-size:13px;color:var(--text-mid);max-width:420px;line-height:1.4}
+  .header-right{font-family:'Space Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;text-align:right}
+
+  .hero{padding:72px 40px 56px;border-bottom:1px solid var(--border)}
+  .hero h1{font-size:clamp(40px,6vw,72px);font-weight:700;letter-spacing:-.04em;line-height:1.0}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero-sub{margin-top:18px;font-size:15px;color:var(--text-mid);max-width:460px}
+
+  .filters{padding:18px 40px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .f-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.14em;text-transform:uppercase;margin-right:4px}
+  .fbtn{background:none;border:1px solid var(--border);color:var(--text-muted);font-family:'Space Grotesk',sans-serif;font-size:13px;padding:5px 14px;border-radius:20px;cursor:pointer;transition:all .15s}
+  .fbtn:hover,.fbtn.on{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+  .catalog{padding:36px 40px 80px;max-width:1280px}
+  .sec-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+
+  .card{background:var(--surface);display:flex;flex-direction:column;cursor:pointer;transition:background .15s;position:relative;overflow:hidden}
+  .card:hover{background:var(--surface2)}
+  .thumb-wrap{width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--surface2);position:relative;display:flex;align-items:center;justify-content:center}
+  .card-thumb{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
+  .card:hover .card-thumb{transform:scale(1.03)}
+  .badge{position:absolute;top:10px;left:10px;font-family:'Space Mono',monospace;font-size:10px;background:rgba(13,13,13,.82);backdrop-filter:blur(4px);padding:3px 8px;letter-spacing:.06em}
+  .badge.nuevo{color:var(--accent);border:1px solid rgba(232,255,71,.3)}
+  .badge.usado{color:var(--text-mid);border:1px solid var(--border)}
+
+  .card-body{padding:16px 18px 20px;flex:1;display:flex;flex-direction:column;gap:9px}
+  .card-tags{display:flex;gap:5px;flex-wrap:wrap}
+  .tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--border);color:var(--text-muted);background:var(--surface)}
+  .card-name{font-size:16px;font-weight:600;letter-spacing:-.015em;line-height:1.25}
+  .card-obs{font-size:12px;color:var(--text-muted);font-style:italic;line-height:1.4}
+  .card-inc{font-size:12px;color:var(--text-mid);margin-top:auto}
+  .card-inc strong{display:block;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:2px}
+  .card-price{margin-top:12px;display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)}
+  .amount{font-size:22px;font-weight:700;letter-spacing:-.03em}
+  .cur{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);margin-left:3px}
+  .see-btn{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;background:none;border:1px solid var(--border);color:var(--text-muted);padding:6px 13px;cursor:pointer;transition:all .15s}
+  .see-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* SLIDER */
+  .slider-section{border-top:1px solid var(--border);padding:48px 40px 64px}
+  .slider-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+  .slider-title{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.15em;text-transform:uppercase}
+  .slider-nav{display:flex;gap:8px}
+  .snav{background:none;border:1px solid var(--border);color:var(--text-muted);width:36px;height:36px;cursor:pointer;font-size:16px;transition:all .15s;display:flex;align-items:center;justify-content:center}
+  .snav:hover{border-color:var(--accent);color:var(--accent)}
+  .slider-track-wrap{overflow:hidden}
+  .slider-track{display:flex;gap:16px;transition:transform .4s cubic-bezier(.25,.46,.45,.94);will-change:transform}
+  .slide{flex:0 0 calc(33.333% - 11px);min-width:0;cursor:pointer;position:relative;overflow:hidden}
+  .slide img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;transition:transform .35s ease;background:var(--surface2)}
+  .slide:hover img{transform:scale(1.04)}
+  .slide-label{margin-top:10px;font-size:13px;font-weight:500;color:var(--text-mid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .slide-price{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);margin-top:3px}
+  .slider-dots{display:flex;gap:6px;margin-top:20px}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s;border:none}
+  .dot.on{background:var(--accent)}
+
+  /* MODAL */
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;align-items:center;justify-content:center;padding:20px}
+  .overlay.open{display:flex}
+  .modal{background:var(--surface);border:1px solid var(--border);max-width:700px;width:100%;max-height:92vh;overflow-y:auto}
+  .modal-imgs{width:100%;display:flex;gap:3px;background:var(--surface2)}
+  .modal-imgs img{flex:1;min-width:0;object-fit:cover;height:260px;cursor:pointer;transition:opacity .15s;display:block}
+  .modal-imgs img:hover{opacity:.85}
+  .modal-imgs.single img{height:340px}
+  .modal-body{padding:28px 32px 32px}
+  .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:20px}
+  .modal-title{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
+  .mclose{background:none;border:1px solid var(--border);color:var(--text-muted);width:36px;height:36px;cursor:pointer;font-size:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+  .mclose:hover{border-color:var(--text);color:var(--text)}
+  .modal-meta{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+  .mmeta label{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-muted);letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:3px}
+  .mmeta span{font-size:14px;color:var(--text)}
+  .modal-footer{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid var(--border);flex-wrap:wrap;gap:14px}
+  .mprice{font-size:30px;font-weight:700;letter-spacing:-.03em}
+  .mcta{display:flex;gap:10px;flex-wrap:wrap}
+  .btn-wa{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;background:var(--accent);color:#0d0d0d;border:none;padding:11px 22px;cursor:pointer;text-decoration:none;display:inline-block;transition:opacity .15s}
+  .btn-wa:hover{opacity:.85}
+  .btn-cl{font-family:'Space Grotesk',sans-serif;font-size:14px;background:none;border:1px solid var(--border);color:var(--text-muted);padding:11px 22px;cursor:pointer;transition:all .15s}
+  .btn-cl:hover{border-color:var(--text-muted);color:var(--text)}
+
+  .empty{padding:60px 40px;text-align:center;font-family:'Space Mono',monospace;font-size:12px;color:var(--text-muted);display:none}
+
+  footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+  footer p{font-size:12px;color:var(--text-muted);font-family:'Space Mono',monospace}
+  footer a{color:var(--accent);text-decoration:none}
+
+  @media(max-width:640px){
+    header,footer,.hero,.filters,.catalog,.slider-section{padding-left:20px;padding-right:20px}
+    .slide{flex:0 0 calc(85% - 8px)}
+    .modal-body{padding:20px}
+    .modal-meta{grid-template-columns:1fr}
+    .header-right{display:none}
+    .modal-imgs img{height:180px}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <p class="site-desc">Venta de equipos y accesorios nuevos y usados siempre en excelentes condiciones.</p>
+  <div class="header-right">Buenos Aires · Vendedor directo</div>
+</header>
+
+<section class="hero">
+  <h1>Equipos &<br><em>accesorios</em><br>sin intermediarios.</h1>
+  <p class="hero-sub">Todo probado, en perfecto estado. Precios en ARS, entrega en mano en Buenos Aires.</p>
+</section>
+
+<div class="filters">
+  <span class="f-label">Ver</span>
+  <button class="fbtn on" onclick="filter('all',this)">Todo</button>
+  <button class="fbtn" onclick="filter('nuevo',this)">Nuevo / Open Box</button>
+  <button class="fbtn" onclick="filter('usado',this)">Usado</button>
+</div>
+
+<main class="catalog">
+  <p class="sec-label">Fotografía &amp; Video — <span id="count">6</span> productos disponibles</p>
+  <div class="grid" id="grid">
+
+    <article class="card" data-estado="nuevo" onclick="openModal(1)">
+      <div class="thumb-wrap">
+        <img class="card-thumb" src="img/fx3.jpg" alt="FX3">
+        <span class="badge nuevo">Nuevo · Open Box</span>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="tag">Cámara</span><span class="tag">Full Frame</span><span class="tag">Cinema Line</span></div>
+        <div class="card-name">FX3</div>
+        <div class="card-obs">Open box — solo usada para unboxing. Garantía 1 año.</div>
+        <div class="card-inc"><strong>Incluye</strong>Cargador original · Handle XLR</div>
+        <div class="card-price">
+          <div><span class="amount">$4.500.000</span><span class="cur">ARS</span></div>
+          <button class="see-btn" onclick="event.stopPropagation();openModal(1)">Ver más</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-estado="usado" onclick="openModal(2)">
+      <div class="thumb-wrap">
+        <img class="card-thumb" src="https://drive.google.com/thumbnail?id=1mWXJzGXNuz6SNK98RghgfO6MyOD6zUn8&sz=w600" alt="FX30">
+        <span class="badge usado">Usado · 1 año</span>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="tag">Cámara</span><span class="tag">APS-C</span><span class="tag">Cinema Line</span></div>
+        <div class="card-name">FX30</div>
+        <div class="card-inc"><strong>Incluye</strong>Cargador original · Handle XLR</div>
+        <div class="card-price">
+          <div><span class="amount">$1.900.000</span><span class="cur">ARS</span></div>
+          <button class="see-btn" onclick="event.stopPropagation();openModal(2)">Ver más</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-estado="nuevo" onclick="openModal(3)">
+      <div class="thumb-wrap">
+        <img class="card-thumb" src="img/lente.jpg" alt="Lente 100mm GM">
+        <span class="badge nuevo">Nuevo · Sin uso</span>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="tag">Lente</span><span class="tag">G Master</span><span class="tag">100mm</span></div>
+        <div class="card-name">Lente 100mm F2.8 G Master</div>
+        <div class="card-obs">Open box, sin uso real.</div>
+        <div class="card-price">
+          <div><span class="amount">$1.000.000</span><span class="cur">ARS</span></div>
+          <button class="see-btn" onclick="event.stopPropagation();openModal(3)">Ver más</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-estado="nuevo" onclick="openModal(4)">
+      <div class="thumb-wrap">
+        <img class="card-thumb" src="img/tarjeta_1.jpg" alt="CFexpress 240GB">
+        <span class="badge nuevo">Nuevo · En caja</span>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="tag">Memoria</span><span class="tag">CFexpress A</span><span class="tag">240GB</span></div>
+        <div class="card-name">CFexpress Tipo A 240GB</div>
+        <div class="card-obs">Caja cerrada con garantía. CEA-G240T.</div>
+        <div class="card-price">
+          <div><span class="amount">$490.000</span><span class="cur">ARS</span></div>
+          <button class="see-btn" onclick="event.stopPropagation();openModal(4)">Ver más</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-estado="nuevo" onclick="openModal(5)">
+      <div class="thumb-wrap">
+        <img class="card-thumb" src="img/lector_1.jpg" alt="Lector CFexpress">
+        <span class="badge nuevo">Nuevo · En caja</span>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="tag">Accesorio</span><span class="tag">CFexpress A</span></div>
+        <div class="card-name">Lector CFexpress Tipo A MRW-G3</div>
+        <div class="card-obs">Caja cerrada con garantía.</div>
+        <div class="card-price">
+          <div><span class="amount">$200.000</span><span class="cur">ARS</span></div>
+          <button class="see-btn" onclick="event.stopPropagation();openModal(5)">Ver más</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="card" data-estado="usado" onclick="openModal(6)">
+      <div class="thumb-wrap">
+        <img class="card-thumb" src="img/a1.jpg" alt="Alpha A1">
+        <span class="badge usado">Usado · 3 años</span>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="tag">Cámara</span><span class="tag">Full Frame</span></div>
+        <div class="card-name">Alpha A1</div>
+        <div class="card-inc"><strong>Incluye</strong>Cargador · 2 baterías</div>
+        <div class="card-price">
+          <div><span class="amount">$5.000.000</span><span class="cur">ARS</span></div>
+          <button class="see-btn" onclick="event.stopPropagation();openModal(6)">Ver más</button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+  <p class="empty" id="empty">Sin productos en esta categoría.</p>
+</main>
+
+<section class="slider-section">
+  <div class="slider-header">
+    <span class="slider-title">Galería de productos</span>
+    <div class="slider-nav">
+      <button class="snav" onclick="slide(-1)">&#8592;</button>
+      <button class="snav" onclick="slide(1)">&#8594;</button>
+    </div>
+  </div>
+  <div class="slider-track-wrap">
+    <div class="slider-track" id="track">
+      <div class="slide" onclick="openModal(1)">
+        <img src="img/fx3.jpg" alt="FX3" loading="lazy">
+        <div class="slide-label">FX3 — Cinema Line Full Frame</div>
+        <div class="slide-price">$4.500.000 ARS</div>
+      </div>
+      <div class="slide" onclick="openModal(2)">
+        <img src="https://drive.google.com/thumbnail?id=1mWXJzGXNuz6SNK98RghgfO6MyOD6zUn8&sz=w600" alt="FX30" loading="lazy">
+        <div class="slide-label">FX30 — Cinema Line APS-C</div>
+        <div class="slide-price">$1.900.000 ARS</div>
+      </div>
+      <div class="slide" onclick="openModal(3)">
+        <img src="img/lente.jpg" alt="Lente 100mm GM" loading="lazy">
+        <div class="slide-label">Lente 100mm F2.8 G Master</div>
+        <div class="slide-price">$1.000.000 ARS</div>
+      </div>
+      <div class="slide" onclick="openModal(4)">
+        <img src="img/tarjeta_1.jpg" alt="CFexpress 240GB" loading="lazy">
+        <div class="slide-label">CFexpress Tipo A 240GB</div>
+        <div class="slide-price">$490.000 ARS</div>
+      </div>
+      <div class="slide" onclick="openModal(5)">
+        <img src="img/lector_1.jpg" alt="Lector CFexpress" loading="lazy">
+        <div class="slide-label">Lector CFexpress MRW-G3</div>
+        <div class="slide-price">$200.000 ARS</div>
+      </div>
+      <div class="slide" onclick="openModal(6)">
+        <img src="img/a1.jpg" alt="Alpha A1" loading="lazy">
+        <div class="slide-label">Alpha A1 — Full Frame</div>
+        <div class="slide-price">$5.000.000 ARS</div>
+      </div>
+    </div>
+  </div>
+  <div class="slider-dots" id="dots"></div>
+</section>
+
+<div class="overlay" id="overlay" onclick="maybeClose(event)">
+  <div class="modal" id="modal">
+    <div class="modal-imgs" id="mimgs"></div>
+    <div class="modal-body">
+      <div class="modal-head">
+        <div class="modal-title" id="mtitle"></div>
+        <button class="mclose" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-meta" id="mmeta"></div>
+      <div class="modal-footer">
+        <div class="mprice" id="mprice"></div>
+        <div class="mcta" id="mcta"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Vendedor directo · Buenos Aires · Sin intermediarios</p>
+  <p>Consultas: <a href="mailto:tu@email.com">tu@email.com</a></p>
+</footer>
+
+<script>
+const WA = '541152215156';
+
+const P = {
+  1:{name:"FX3",marca:"Sony",cat:"Cámara Cinema Line Full Frame",estado:"Nuevo / Open Box",ant:"Sin uso real",obs:"Open box — usada únicamente para el unboxing. Caja completa con todos sus accesorios. Garantía 1 año.",inc:"Cargador original, Handle XLR",precio:"$4.500.000",moneda:"ARS",imgs:["img/fx3.jpg"]},
+  2:{name:"FX30",marca:"Sony",cat:"Cámara Cinema Line APS-C",estado:"Usado",ant:"1 año",obs:"",inc:"Cargador original, Handle XLR",precio:"$1.900.000",moneda:"ARS",imgs:["https://drive.google.com/thumbnail?id=1mWXJzGXNuz6SNK98RghgfO6MyOD6zUn8&sz=w900","https://drive.google.com/thumbnail?id=1Tn4S74AlOKkPMmDZcJc-ANbR9EqYTlXQ&sz=w900","https://drive.google.com/thumbnail?id=1PvDSpCKKtuorpfTBNn0_qiKSciwwgupB&sz=w900"]},
+  3:{name:"Lente 100mm F2.8 G Master",marca:"Sony",cat:"Lente fijo Full Frame",estado:"Nuevo / Open Box",ant:"Sin uso",obs:"Open box, sin uso real.",inc:"—",precio:"$1.000.000",moneda:"ARS",imgs:["img/lente.jpg"]},
+  4:{name:"CFexpress Tipo A 240GB",marca:"Sony",cat:"Tarjeta de memoria",estado:"Nuevo",ant:"Sin uso",obs:"Caja cerrada con garantía. Modelo CEA-G240T.",inc:"Caja original",precio:"$490.000",moneda:"ARS",imgs:["img/tarjeta_1.jpg","img/tarjeta_2.jpg"]},
+  5:{name:"Lector CFexpress MRW-G3",marca:"Sony",cat:"Accesorio / Lector",estado:"Nuevo",ant:"Sin uso",obs:"Caja cerrada con garantía.",inc:"Caja original",precio:"$200.000",moneda:"ARS",imgs:["img/lector_1.jpg","img/lector_2.jpg"]},
+  6:{name:"Alpha A1",marca:"Sony",cat:"Cámara Full Frame",estado:"Usado",ant:"3 años",obs:"",inc:"Cargador, 2 baterías",precio:"$5.000.000",moneda:"ARS",imgs:["img/a1.jpg"]},
+};
+
+function openModal(id){
+  const p=P[id];
+  document.getElementById('mtitle').textContent=p.name;
+
+  const mimgs=document.getElementById('mimgs');
+  mimgs.className='modal-imgs'+(p.imgs.length===1?' single':'');
+  mimgs.innerHTML=p.imgs.map(src=>`<img src="${src}" alt="${p.name}" loading="lazy">`).join('');
+
+  document.getElementById('mmeta').innerHTML=`
+    <div class="mmeta"><label>Marca</label><span>${p.marca}</span></div>
+    <div class="mmeta"><label>Categoría</label><span>${p.cat}</span></div>
+    <div class="mmeta"><label>Estado</label><span>${p.estado}</span></div>
+    <div class="mmeta"><label>Antigüedad</label><span>${p.ant}</span></div>
+    <div class="mmeta"><label>Incluye</label><span>${p.inc}</span></div>
+    ${p.obs?`<div class="mmeta" style="grid-column:1/-1"><label>Observaciones</label><span>${p.obs}</span></div>`:''}
+  `;
+  document.getElementById('mprice').innerHTML=`${p.precio}<span class="cur" style="font-size:13px;margin-left:6px">${p.moneda}</span>`;
+  const txt=encodeURIComponent(`Hola, me interesa el/la ${p.name} (${p.precio} ${p.moneda}). ¿Está disponible?`);
+  document.getElementById('mcta').innerHTML=`
+    <a class="btn-wa" href="https://wa.me/${WA}?text=${txt}" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+    <button class="btn-cl" onclick="closeModal()">Cerrar</button>
+  `;
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('overlay').classList.remove('open');document.body.style.overflow='';}
+function maybeClose(e){if(e.target===document.getElementById('overlay'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+function filter(type,btn){
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  let n=0;
+  document.querySelectorAll('.card').forEach(c=>{
+    const show=type==='all'||c.dataset.estado===type;
+    c.style.display=show?'':'none';
+    if(show)n++;
+  });
+  document.getElementById('count').textContent=n;
+  document.getElementById('empty').style.display=n===0?'block':'none';
+}
+
+(function(){
+  const track=document.getElementById('track');
+  const slides=track.querySelectorAll('.slide');
+  const dotsEl=document.getElementById('dots');
+  let cur=0;
+  const pv=()=>window.innerWidth<640?1:3;
+  function buildDots(){
+    dotsEl.innerHTML='';
+    const total=Math.ceil(slides.length/pv());
+    for(let i=0;i<total;i++){
+      const d=document.createElement('button');
+      d.className='dot'+(i===0?' on':'');
+      d.onclick=()=>goTo(i);
+      dotsEl.appendChild(d);
+    }
+  }
+  function goTo(idx){
+    const max=Math.ceil(slides.length/pv())-1;
+    cur=Math.max(0,Math.min(idx,max));
+    const w=slides[0].getBoundingClientRect().width;
+    track.style.transform=`translateX(-${cur*(w+16)*pv()}px)`;
+    dotsEl.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  }
+  window.slide=dir=>goTo(cur+dir);
+  window.addEventListener('resize',()=>{buildDots();goTo(0);});
+  buildDots();
+})();
+</script>
+</body>
+</html>
